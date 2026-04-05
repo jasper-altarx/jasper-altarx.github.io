@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Altarx Holdings Pty Ltd</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #ba8e59;
+      --gold-light: #d4a96a;
+      --gold-dim: rgba(186, 142, 89, 0.15);
+      --navy: #1f283d;
+      --navy-deep: #141a28;
+      --navy-mid: #252f47;
+      --text: #e8ddd0;
+      --text-muted: rgba(232, 221, 208, 0.5);
+      --text-dim: rgba(232, 221, 208, 0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--navy-deep);
+      color: var(--text);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* GRAIN TEXTURE OVERLAY */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.4;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(20, 26, 40, 0.95) 0%, transparent 100%);
+    }
+
+    .nav-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .nav-contact {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-contact:hover { color: var(--gold); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 120px 48px 80px;
+      text-align: center;
+    }
+
+    /* Subtle radial glow behind logo */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(ellipse at center, rgba(186, 142, 89, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-logo {
+      width: 180px;
+      height: auto;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease 0.3s forwards;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(42px, 7vw, 72px);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 16px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease 0.5s forwards;
+    }
+
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 64px;
+      opacity: 0;
+      animation: fadeUp 1.2s ease 0.7s forwards;
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 80px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeUp 1.2s ease 0.9s forwards;
+    }
+
+    /* ABOUT */
+    .section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    .section-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.25;
+      color: var(--text);
+      margin-bottom: 32px;
+    }
+
+    .section-body {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .section-body + .section-body {
+      margin-top: 20px;
+    }
+
+    /* DIVIDER LINE */
+    .rule {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+    }
+
+    /* VENTURES */
+    .ventures-section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .venture-card {
+      border: 1px solid var(--gold-dim);
+      padding: 40px;
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      background: rgba(186, 142, 89, 0.03);
+      transition: background 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .venture-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--gold);
+      opacity: 0.6;
+    }
+
+    .venture-card:hover {
+      background: rgba(186, 142, 89, 0.06);
+      border-color: rgba(186, 142, 89, 0.3);
+    }
+
+    .venture-meta {
+      flex: 1;
+    }
+
+    .venture-status {
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .venture-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 28px;
+      color: var(--text);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .venture-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 14px;
+      color: var(--gold);
+      margin-bottom: 16px;
+    }
+
+    .venture-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    .venture-link {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 20px;
+      transition: gap 0.3s ease;
+    }
+
+    .venture-link:hover { gap: 14px; }
+    .venture-link::after { content: '→'; }
+
+    /* CONTACT */
+    .contact-section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 100px 48px 160px;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .contact-item-label {
+      font-size: 9px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+
+    .contact-item-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      color: var(--text);
+      letter-spacing: 0.05em;
+    }
+
+    .contact-item-value a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-item-value a:hover { color: var(--gold); }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--gold-dim);
+      padding: 32px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+
+    .footer-legal {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+
+    .footer-abn {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      nav { padding: 20px 24px; }
+      .section, .ventures-section, .contact-section { padding-left: 24px; padding-right: 24px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+      .venture-card { flex-direction: column; padding: 28px 24px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-wordmark">Altarx</a>
+    <a href="mailto:jasper@altarx.co" class="nav-contact">jasper@altarx.co</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img class="hero-logo" src="Altarx_Logo.png" alt="Altarx Holdings" />
+    <h1 class="hero-name">Altarx</h1>
+    <p class="hero-tagline">The High Ground</p>
+    <div class="hero-divider"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section reveal">
+    <div class="section-label">About</div>
+    <h2 class="section-heading">A private holding company<br>built for the long game.</h2>
+    <p class="section-body">
+      Altarx Holdings Pty Ltd is an Australian proprietary limited company incorporated to develop, hold, and govern a portfolio of commercial ventures. The structure is designed for deliberate growth — each venture independently positioned, all operating from a disciplined foundation.
+    </p>
+    <p class="section-body">
+      The name draws from the Latin <em>altus</em> — elevated, high — and <em>arx</em> — citadel, stronghold. Altarx is the high citadel: a commanding position held with conviction, not inherited by chance.
+    </p>
+  </section>
+
+  <div class="rule reveal"></div>
+
+  <!-- VENTURES -->
+  <section class="ventures-section reveal">
+    <div class="section-label">Ventures</div>
+    <h2 class="section-heading">Current portfolio</h2>
+
+    <div class="venture-card" style="margin-top: 40px;">
+      <div class="venture-meta">
+        <div class="venture-status">Active — Phase 1</div>
+        <div class="venture-name">FrostShot</div>
+        <div class="venture-tagline">The iced coffee system. Perfected.</div>
+        <p class="venture-desc">
+          A direct-to-consumer brand building purpose-built tools for barista-quality iced coffee at home. Core product: a precision espresso-cube tray engineered for the FrostShot method. Pre-launch, Australia.
+        </p>
+        <a href="https://frostshot.co" target="_blank" rel="noopener" class="venture-link">frostshot.co</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule reveal"></div>
+
+  <!-- CONTACT -->
+  <section class="contact-section reveal">
+    <div class="section-label">Contact</div>
+    <h2 class="section-heading">Get in touch</h2>
+
+    <div class="contact-grid">
+      <div>
+        <div class="contact-item-label">Email</div>
+        <div class="contact-item-value">
+          <a href="mailto:jasper@altarx.co">jasper@altarx.co</a>
+        </div>
+      </div>
+      <div>
+        <div class="contact-item-label">Location</div>
+        <div class="contact-item-value">Canberra, Australia</div>
+      </div>
+      <div>
+        <div class="contact-item-label">Entity</div>
+        <div class="contact-item-value">Altarx Holdings Pty Ltd</div>
+      </div>
+      <div>
+        <div class="contact-item-label">Web</div>
+        <div class="contact-item-value">
+          <a href="https://altarx.co">altarx.co</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-legal">© 2026 Altarx Holdings Pty Ltd. All rights reserved.</span>
+    <span class="footer-abn">ACN / ABN on file with ASIC</span>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
